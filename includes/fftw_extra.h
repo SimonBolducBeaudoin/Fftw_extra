@@ -1,8 +1,7 @@
 #pragma once
 
-#include "../../includes/header_common.h"
+#include <fftw3.h>
 #include "../../Multi_array/Multi_array.h"
-// #include "../../Omp_extra/includes/omp_extra.h"
 
 typedef unsigned int uint ;
 typedef std::complex<double> complex_d;

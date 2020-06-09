@@ -39,7 +39,7 @@ np_complex_d analytic_py( np_double& in )
 
 void init_fftw_extra(py::module &m)
 {
-	m.def("r2c_basic", &r2c_basic_py , "data"_a.noconvert() , "l_fft"_a ) ;
+	m.def("r2c_basic", &r2c_basic_py , "data"_a.noconvert() , "l_fft"_a  ) ;
 	m.def("r2c_advanced", &r2c_advanced_py , "data"_a.noconvert() , "l_fft"_a , "howmany"_a ) ;
 	m.def("hilbert", &hilbert_py , "data"_a.noconvert() ) ;
 	m.def("analytic", &analytic_py , "data"_a.noconvert() ) ;
