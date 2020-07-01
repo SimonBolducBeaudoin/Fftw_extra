@@ -1,7 +1,7 @@
 #pragma once
 
 #include <fftw3.h>
-#include "../../Multi_array/Multi_array.h"
+#include <Multi_array.h>
 
 typedef unsigned int uint ;
 typedef std::complex<double> complex_d;

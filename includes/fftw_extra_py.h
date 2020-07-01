@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../../includes/header_common.h"
-#include "../../Multi_array/Multi_array.h"
-#include "fftw_extra.h"
+// #include "../../includes/header_common.h"
+#include <Multi_array.h>
+#include <fftw_extra.h>
 
 
 typedef py::array_t<double,py::array::c_style> np_double ; 
