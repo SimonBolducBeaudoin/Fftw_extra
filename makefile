@@ -5,6 +5,7 @@ TARGET_PYLIB = ../Python/$(TARGET_NAME)$(PYLIB_EXT)
 
 MULTI_ARRAY = ../Multi_array
 FFTW_EXTRA = ../FFTW_EXTRA
+LIBS = ../libs
 
 IDIR = includes
 ODIR = obj
@@ -47,6 +48,29 @@ INCLUDES = $(PY_INCL) $(EXTERNAL_INCLUDES)
 COMPILE  = $(CXX) $(CPP_STD) $(OPTIMIZATION) $(POSITION_INDEP) $(WARNINGS) -c -o $@ $< $(INCLUDES) $(DEPS_FLAG) $(MINGW_COMPATIBLE)
 ASSEMBLY = $(CXX) $(CPP_STD) $(OPTIMIZATION) $(POSITION_INDEP) $(WARNINGS) -S -o $@ $< $(INCLUDES) $(DEPS_FLAG) $(MINGW_COMPATIBLE)
 
+LINK_BENCHMARK_CUSTOM =$(FFTW)
+
+LINK_BENCHMARK = \
+	$(LINK_BENCHMARK_CUSTOM) \
+	-L$(LIBS)/benchmark/build/src -lbenchmark -lpthread -lshlwapi \
+
+LINKING_BENCHMARK = \
+	$(CXX) -O3 -march=native \
+	-Wl,-rpath=/c/cygwin64/usr/x86_64-w64-mingw32/sys-root/mingw/bin \
+	-o $@ $< \
+	$(LINK_BENCHMARK)\
+	$(DEPS_FLAG) $(MINGW_COMPATIBLE) \
+	
+INCLUDES_BENCHMARK = \
+	-I $(LIBS)/benchmark/include \
+	$(INCLUDES)
+	
+COMPILE_BENCHMARK = \
+	$(CXX) $(CPP_STD) $< -O3 -march=native \
+	$(INCLUDES_BENCHMARK) \
+	$(DEPS_FLAG) $(MINGW_COMPATIBLE) \
+	-c -o $@
+
 compile_objects : $(OBJ)
 
 assembly : $(ASS)
@@ -56,6 +80,18 @@ all : $(TARGET_PYLIB) $(TARGET_STATIC) $(OBJ) $(ASS)
 python_debug_library : $(TARGET_PYLIB)
 
 static_library : $(TARGET_STATIC)
+
+benchmark : benchmark.exe
+
+benchmark.exe : benchmark.o
+	@ echo " "
+	@ echo "---------Compile $@ ---------"
+	$(LINKING_BENCHMARK)
+
+benchmark.o : benchmark.cpp
+	@ echo " "
+	@ echo "---------Compile $@ from $< ---------"
+	$(COMPILE_BENCHMARK)	
 
 $(TARGET_PYLIB): $(OBJ)
 	@ echo " "
@@ -80,6 +116,6 @@ $(ODIR)/%.s : $(SDIR)/%.cpp
 -include $(DEPS)
 
 clean:
-	@rm -f $(TARGET_PYLIB) $(TARGET_STATIC) $(OBJ) $(ASS) $(DEPS)
+	@rm -f $(TARGET_PYLIB) $(TARGET_STATIC) $(OBJ) $(ASS) $(DEPS) benchmark.o benchmark.exe
 	 	 
-.PHONY: all , clean , python_debug_library , compile_objects , static_library , assembly 
+.PHONY: all , clean , python_debug_library , compile_objects , static_library , assembly , benchmark
