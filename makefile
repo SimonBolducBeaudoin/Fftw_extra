@@ -7,12 +7,11 @@ MULTI_ARRAY = ../Multi_array
 FFTW_EXTRA = ../FFTW_EXTRA
 LIBS = ../libs
 
-IDIR = includes
 ODIR = obj
 LDIR = lib
 SDIR = src
 
-EXTERNAL_INCLUDES = -I$(MULTI_ARRAY)/$(IDIR) -I$(FFTW_EXTRA)/$(IDIR)
+EXTERNAL_INCLUDES = -I$(MULTI_ARRAY)/$(SDIR) -I$(FFTW_EXTRA)/$(SDIR)
 
 SRC  = $(wildcard $(SDIR)/*.cpp)
 OBJ  = $(patsubst $(SDIR)/%.cpp,$(ODIR)/%.o,$(SRC))
@@ -41,7 +40,7 @@ endif
 PY_LINKS = $(OS:Windows_NT=-L /c/Anaconda2/ -lpython27)
 
 LINKS =  $(FFTW) $(PY_LINKS)
-LINKING = $(CXX) $(OPTIMIZATION) $(POSITION_INDEP) $(SHARED)  -o $(TARGET_PYLIB) $(OBJ) $(LINKS) $(EXTERNAL_OBJ) $(DEPS_FLAG) $(MINGW_COMPATIBLE)
+LINKING = $(CXX) $(OPTIMIZATION) $(POSITION_INDEP) $(SHARED)  -o $(TARGET_PYLIB) $(OBJ) $(LINKS) $(DEPS_FLAG) $(MINGW_COMPATIBLE)
 STATIC_LIB = ar cr $(TARGET_STATIC) $(OBJ) 
 
 INCLUDES = $(PY_INCL) $(EXTERNAL_INCLUDES)
@@ -77,7 +76,7 @@ assembly : $(ASS)
 
 all : $(TARGET_PYLIB) $(TARGET_STATIC) $(OBJ) $(ASS)
 
-python_debug_library : $(TARGET_PYLIB)
+python_library : $(TARGET_PYLIB)
 
 static_library : $(TARGET_STATIC)
 
@@ -118,4 +117,4 @@ $(ODIR)/%.s : $(SDIR)/%.cpp
 clean:
 	@rm -f $(TARGET_PYLIB) $(TARGET_STATIC) $(OBJ) $(ASS) $(DEPS) benchmark.o benchmark.exe
 	 	 
-.PHONY: all , clean , python_debug_library , compile_objects , static_library , assembly , benchmark
+.PHONY: all , clean , python_library , compile_objects , static_library , assembly , benchmark
