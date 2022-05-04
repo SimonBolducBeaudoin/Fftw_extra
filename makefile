@@ -4,7 +4,7 @@ PYLIB_EXT = $(if $(filter $(OS),Windows_NT),.pyd,.so)
 TARGET_PYLIB = ../../Python_2_7/lib/$(TARGET_NAME)$(PYLIB_EXT)
 
 MULTI_ARRAY = ../Multi_array
-FFTW_EXTRA = ../FFTW_EXTRA
+FFTW_EXTRA = ../FFTW_extra
 LIBS = ../libs
 
 ODIR = obj
