@@ -1,7 +1,7 @@
 TARGET_NAME = fftw_extra
 TARGET_STATIC = $(TARGET_NAME).a
 PYLIB_EXT = $(if $(filter $(OS),Windows_NT),.pyd,.so)
-TARGET_PYLIB = $(TARGET_NAME)$(PYLIB_EXT)
+TARGET_PYLIB = bin/$(TARGET_NAME)$(PYLIB_EXT)
 
 MULTI_ARRAY = ../Multi_array
 FFTW_EXTRA = ../FFTW_extra
