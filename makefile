@@ -1,7 +1,7 @@
 TARGET_NAME = fftw_extra
 TARGET_STATIC = $(TARGET_NAME).a
 PYLIB_EXT = $(if $(filter $(OS),Windows_NT),.pyd,.so)
-TARGET_PYLIB = ../../Python_2_7/lib/$(TARGET_NAME)$(PYLIB_EXT)
+TARGET_PYLIB = $(TARGET_NAME)$(PYLIB_EXT)
 
 MULTI_ARRAY = ../Multi_array
 FFTW_EXTRA = ../FFTW_EXTRA
@@ -30,14 +30,19 @@ SHARED = -shared
 
 FFTW= -lfftw3
  
-PY = $(OS:Windows_NT=/c/Anaconda2/)python
-
-PY_INCL := $(shell $(PY) -m pybind11 --includes)
-ifneq ($(OS),Windows_NT)
-    PY_INCL += -I /usr/include/python2.7/
+ifeq ($(shell hostname),Simon-T14) 
+	PY = $(OS:Windows_NT=/c/Anaconda3/envs/python2/)python
+else
+    PY = $(OS:Windows_NT=/c/Anaconda2/)python
 endif
 
-PY_LINKS = $(OS:Windows_NT=-L /c/Anaconda2/ -lpython27)
+PY_INCL := $(shell $(PY) -m pybind11 --includes)
+
+ifeq ($(shell hostname),Simon-T14) 
+	PY_LINKS  = $(OS:Windows_NT=-L /c/Anaconda3/envs/python2/ -lpython27)
+else
+    PY_LINKS  = $(OS:Windows_NT=-L /c/Anaconda2/ -lpython27)
+endif
 
 LINKS =  $(FFTW) $(PY_LINKS)
 LINKING = $(CXX) $(OPTIMIZATION) $(POSITION_INDEP) $(SHARED)  -o $(TARGET_PYLIB) $(OBJ) $(LINKS) $(DEPS_FLAG) $(MINGW_COMPATIBLE)
