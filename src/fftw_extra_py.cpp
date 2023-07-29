@@ -1,4 +1,4 @@
-#include "fftw_extra_py.h"
+#include <fftw_extra_py.h>
 
 // Numpy compatible functions
 np_complex_d r2c_basic_py( np_double& in )
