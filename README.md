@@ -1,6 +1,10 @@
 # FFTW_extra
 Adding some features to FFTW.
 
+# Output
+    - *.pyd a python library containing the wrapped code.
+    - *.a   a static labrary excluding the python features (only c/c++ code).
+    
 # Dependencies
     All homebrewed libraries are imported using global imports "#include <library.h> ".
     This means that the library must eather be installed in your environnment's path or that it must be included during compilation and linking. 

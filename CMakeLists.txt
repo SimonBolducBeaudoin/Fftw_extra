@@ -1,22 +1,18 @@
-##########################
-set(PROJECT_NAME FFTW_extra) 
-set(LIB_NAME fftw_extra)
-set(EXTERNAL_INCLUDES ../Multi_array/src ./src)
+# Should be compatible with unix and 
+# compilation on windows using cygwin and crosscompiling using mingw
+# also don't forget to edit config.cmake for machine specific stuff     
 
-###########################
+set(PROJECT_NAME FFTW_extra)                    
+set(LIB_NAME fftw_extra)                        
+set(EXTERNAL_INCLUDES ../Multi_array/src ./src) 
+separate_arguments(EXTERNAL_INCLUDES)           # Turned into a list a list 
+set(LINKS -lfftw3)       
+
 cmake_minimum_required(VERSION 3.15)
 project(%{PROJECT_NAME} VERSION 1.0.0) # Needs to be ontop
-include(config.cmake)
-string(FIND ${CMAKE_CXX_COMPILER} x86_64-w64-mingw32-g++ IS_MINGW) 
 
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Choose Release or Debug" FORCE)
-endif()
-
-if(IS_MINGW) #Crosscompiling
-    set(Python_EXECUTABLE ${CONDA_PY_EXE})
-else() #unix
-    find_package(Python COMPONENTS Interpreter REQUIRED)
 endif()
 
 file(MAKE_DIRECTORY ${PROJECT_SOURCE_DIR}/build)
@@ -36,27 +32,15 @@ file(GLOB SRC_FILES "src/*.cpp")
 add_compile_options(-Wall -O3 -march=native )
 
 add_library(${LIB_NAME} ${SRC_FILES})
-
-# peparing pybind11 includes
-execute_process(COMMAND ${Python_EXECUTABLE} -m pybind11 --includes OUTPUT_VARIABLE PY_INCL)
-string(REGEX REPLACE "-I" "" PY_INCL ${PY_INCL}) #removes -I
-string(REGEX REPLACE "\n" "" PY_INCL ${PY_INCL}) #removes \n
-if(CYGWIN)
-string(REGEX REPLACE "C\:" "/cygdrive/c" PY_INCL ${PY_INCL})
-endif()
+include(config.cmake) # sets IS_MINGW,PY_INCL,SHARED_LIB_PREFIX,SHARED_LIB_SUFFIX and updates LINKS
 
 #compile includes
-separate_arguments(PY_INCL)
-include_directories(${PY_INCL})
-separate_arguments(EXTERNAL_INCLUDES)
+include_directories(${PY_INCL})           # pybind11 includes
 include_directories(${EXTERNAL_INCLUDES})
 
 #linking 
-if ( IS_MINGW ) # genrate libbrary named "name.pyd" else it's named "libname.so"
-    set_target_properties(${LIB_NAME} PROPERTIES PREFIX "")
-    set_target_properties(${LIB_NAME} PROPERTIES SUFFIX ".pyd")
-	target_link_libraries(${LIB_NAME} ${CONDA_PY_LINKS})
-endif()
-target_link_libraries(${LIB_NAME} -lfftw3)
+set_target_properties(${LIB_NAME} PROPERTIES PREFIX "${SHARED_LIB_PREFIX}")
+set_target_properties(${LIB_NAME} PROPERTIES SUFFIX ${SHARED_LIB_SUFFIX})
+target_link_libraries(${LIB_NAME} ${LINKS})
 
 
