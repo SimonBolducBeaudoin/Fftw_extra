@@ -16,7 +16,17 @@ Adding some features to FFTW.
             - Can be installed using your package manager.
         - pybind11
     Pybind11 can be installed using you're python package manager (conda(anaconda env),pip,pacman,...).
-    
+
+# Removing AutoGitVersion
+    AutoGitVersion automatically collects information about the current git commit and saves them in a litteral string (kGitInfo) that is accessible by including git_version.h. The code functionnality does't depend on this string and therefore AutoGitVersion can be remove easely by commenting the following lines :
+    - in CMakeLists.txt :
+        include(../AutoGitVersion/AutoGitVersion.cmake) # Defined cmake functions : AutoGitVersion and others
+        AutoGitVersion()                 # Sets up a target git_version.cpp that constains  kGitHash and GitTag as const
+        set(DEPENDS_ON_GIT_VERSION git_version)
+    - in python_submodule.cpp
+        #include "git_version.h"
+        and removing kGitInfo from the docstring.
+
 # Building and compiling
     - Edit config.cmake for your machine (If you are compiling in a different envionnment than your python installation) so that pybind11 can be detected and used.
     - Unix environnment

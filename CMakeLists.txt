@@ -11,6 +11,12 @@ set(LINKS -lfftw3)
 cmake_minimum_required(VERSION 3.15)
 project(%{PROJECT_NAME} VERSION 1.0.0) # Needs to be ontop
 
+# AUTOGIT STUFF #########
+include(../AutoGitVersion/AutoGitVersion.cmake) # Defined cmake functions : AutoGitVersion and others
+AutoGitVersion()                 # Sets up a target git_version.cpp that constains  kGitHash and GitTag as const
+set(DEPENDS_ON_GIT_VERSION git_version)
+#########################
+
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Choose Release or Debug" FORCE)
 endif()
