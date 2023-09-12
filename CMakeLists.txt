@@ -4,13 +4,19 @@
 
 set(PROJECT_NAME FFTW_extra)                    
 set(LIB_NAME fftw_extra)                        
-set(EXTERNAL_INCLUDES ../Multi_array/src ./src) 
-separate_arguments(EXTERNAL_INCLUDES)           # Turned into a list a list 
+set(EXTERNAL_INCLUDES Multi_array/src ) 
+set(STATIC_LINKS ) 
 set(COMPILE_OPTIONS_ADD )  
 set(LINKS -lfftw3)       
 
 cmake_minimum_required(VERSION 3.15)
 project(${PROJECT_NAME} ) # Needs to be ontop
+
+# Prepending the absolute path
+list(TRANSFORM EXTERNAL_INCLUDES PREPEND "${PROJECT_SOURCE_DIR}/../" REGEX "^(.*)$" )
+list(TRANSFORM STATIC_LINKS PREPEND "${PROJECT_SOURCE_DIR}/../" REGEX "^(.*)$" )
+list(APPEND LINKS ${STATIC_LINKS})
+
 
 # AUTOGIT STUFF #########
 include(../AutoGitVersion/AutoGitVersion.cmake) # Defined cmake functions : AutoGitVersion and others

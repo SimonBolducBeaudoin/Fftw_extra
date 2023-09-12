@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Multi_array.h>
-#include <fftw_extra.h>
+#include "fftw_extra.h"
 
 typedef py::array_t<double,py::array::c_style> np_double ; 
 typedef py::array_t<complex_d,py::array::c_style> np_complex_d ; 
