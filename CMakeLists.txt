@@ -6,10 +6,11 @@ set(PROJECT_NAME FFTW_extra)
 set(LIB_NAME fftw_extra)                        
 set(EXTERNAL_INCLUDES ../Multi_array/src ./src) 
 separate_arguments(EXTERNAL_INCLUDES)           # Turned into a list a list 
+set(COMPILE_OPTIONS_ADD )  
 set(LINKS -lfftw3)       
 
 cmake_minimum_required(VERSION 3.15)
-project(%{PROJECT_NAME} VERSION 1.0.0) # Needs to be ontop
+project(${PROJECT_NAME} ) # Needs to be ontop
 
 # AUTOGIT STUFF #########
 include(../AutoGitVersion/AutoGitVersion.cmake) # Defined cmake functions : AutoGitVersion and others
@@ -41,6 +42,7 @@ list(FILTER SRC_STATIC EXCLUDE REGEX ".*_py\\.cpp$")
 list(FILTER SRC_STATIC EXCLUDE REGEX ".*python_submodule\\.cpp$")
 
 add_compile_options(-Wall -O3 -march=native )
+add_compile_options(${COMPILE_OPTIONS_ADD})
 
 add_library(${LIB_NAME}_py ${SRC_FILES})        #shared library (i.e. the python library)
 set_target_properties(${LIB_NAME}_py PROPERTIES OUTPUT_NAME ${LIB_NAME})        #shared library (i.e. the python library)
