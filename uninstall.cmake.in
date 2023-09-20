@@ -1,0 +1,2 @@
+file(REMOVE @INSTALL_DIR@/fftw_extra.pyd)
+file(REMOVE @INSTALL_DIR@/fftw_extra.so)
