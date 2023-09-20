@@ -6,7 +6,7 @@
 //Python Binding and Time_Quad class instances.
 PYBIND11_MODULE(fftw_extra, m)
 {
-    m.doc() = "Extra function related to fftw library.";
+    m.doc() = "Extra function related to fftw library.\n";   
 	init_fftw_extra(m);
 }
 
