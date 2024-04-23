@@ -4,7 +4,7 @@
 
 set(PROJECT_NAME FFTW_extra)                    
 set(LIB_NAME fftw_extra)                        
-set(EXTERNAL_INCLUDES Multi_array/src ) 
+set(EXTERNAL_INCLUDES ../Multi_array/src ) 
 set(STATIC_LINKS ) 
 set(COMPILE_OPTIONS_ADD )  
 set(LINKS -lfftw3)       
@@ -60,7 +60,6 @@ target_link_libraries(${LIB_NAME}_py ${LINKS})
 set_target_properties(${LIB_NAME} PROPERTIES PREFIX "${SHARED_LIB_PREFIX}")
 target_link_libraries(${LIB_NAME} ${LINKS})
 
-message(STATUS "Installing FFTW_extra")
 set(DIR ${PROJECT_SOURCE_DIR}/obj/) 
 set(INSTALL_DIR ${PROJECT_SOURCE_DIR}) 
 install(DIRECTORY ${DIR} DESTINATION ${INSTALL_DIR} FILES_MATCHING PATTERN "*.pyd" PATTERN "*.so")
