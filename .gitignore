@@ -35,4 +35,5 @@
 *.dat
 
 # Directories
-build
+build__pycache__/
+__pycache__/
