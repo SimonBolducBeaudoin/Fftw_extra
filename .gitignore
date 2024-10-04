@@ -39,3 +39,4 @@ build__pycache__/
 __pycache__/
 *.bak
 .clang-format
+*.ignore
